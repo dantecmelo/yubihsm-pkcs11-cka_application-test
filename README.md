@@ -10,7 +10,7 @@ The test runs in three fully logged phases.
   - CKA_APPLICATION = "SmartcryptWrappedBinary"
   - A small UTF-8 payload as CKA_VALUE.
 
-Every attribute in the template is printed to the console before the call.
+  Every attribute in the template is printed to the console before the call.
 
 * Phase 2 — Find. It issues C_FindObjects filtered by CKO_DATA and the label. It fails hard if the object is not found, which catches cases where C_CreateObject silently succeeded but didn't actually persist anything.
 
