@@ -1,3 +1,26 @@
+# What this test application does step-by-step
+This is a .NET C# application that teste the patched YubiHSM PKCS#11 library https://github.com/dantecmelo/yubihsm-shell_272_opaque.
+
+The test runs in three fully logged phases.
+
+* Phase 1 — Create. It builds a C_CreateObject template with CKO_DATA, CKA_TOKEN = true, CKA_LABEL = "pkcs11interop-test-object", CKA_APPLICATION = "SmartcryptWrappedBinary", and a small UTF-8 payload as CKA_VALUE. Every attribute in the template is printed to the console before the call.
+
+* Phase 2 — Find. It issues C_FindObjects filtered by CKO_DATA and the label. It fails hard if the object is not found, which catches cases where C_CreateObject silently succeeded but didn't actually persist anything.
+
+* Phase 3 — Verify. It calls C_GetAttributeValue for CKA_CLASS, CKA_TOKEN, CKA_LABEL, CKA_APPLICATION, and CKA_VALUE, then asserts each one against the expected value. The critical assertion is CKA_APPLICATION == "SmartcryptWrappedBinary". If the library is not patched you'll see:
+*** TEST FAILED: CKA_APPLICATION: expected [SmartcryptWrappedBinary]
+                 but got [Opaque object] ***
+If it is patched correctly you'll see:
+  ✓ CKA_CLASS       = "CKO_DATA"
+  ✓ CKA_TOKEN       = "True"
+  ✓ CKA_LABEL       = "pkcs11interop-test-object"
+  ✓ CKA_APPLICATION = "SmartcryptWrappedBinary"
+  ✓ CKA_VALUE       = "Hello from Pkcs11Interop test"
+
+*** ALL CHECKS PASSED ***
+The test also deletes any leftover object with the same label at startup so repeated runs are idempotent, and it deletes the object at the end to keep the HSM clean. Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception.
+
+
 # Part 1 — Install .NET 6 SDK
 Ubuntu 20.04 does not ship .NET in its default apt repositories, so you add Microsoft's feed manually.
 
