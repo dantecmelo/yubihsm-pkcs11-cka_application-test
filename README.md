@@ -83,3 +83,119 @@ private static class Config
 ~~~
 
 Save and close the file.
+
+# Part 3 - Build the Project
+`cd ~/yubihsm-pkcs11-cka_application-test`
+
+## Restore the NuGet package (downloads Net.Pkcs11Interop)
+`dotnet restore`
+
+## Build in Release configuration
+`dotnet build --configuration Release`
+
+## Confirm the binary was produced
+`ls -la bin/Release/net6.0/YubiHsmPkcs11Test`
+
+If the build succeeds, you will see:
+~~~
+Build succeeded.s
+    0 Warning(s)
+    0 Error(s)
+~~~
+
+# Part 4 — Run the Test
+Make sure:
+The connector is running (Part 3c)
+The YUBIHSM_PKCS11_CONF variable is set (Part 3d)
+The YubiHSM 2 is plugged in
+
+`cd ~/yubihsm-pkcs11-test`
+
+~~~
+# The environment variable must be set in this shell
+export YUBIHSM_PKCS11_CONF=/etc/yubihsm_pkcs11.conf
+
+dotnet run --configuration Release
+~~~
+
+### Expected output when the library is **not** yet patched
+```
+=== YubiHSM CKA_APPLICATION Round-Trip Test ===
+
+[OK] Library loaded — /usr/lib/x86_64-linux-gnu/pkcs11/yubihsm_pkcs11.so
+[OK] Slot found — slot id = 0
+[OK] Session opened & logged in
+
+── Phase 1: Creating CKO_DATA object ──────────────────
+  Creating with template:
+    CKA_CLASS                      = 0x0 (0)
+    CKA_TOKEN                      = True
+    CKA_PRIVATE                    = False
+    CKA_SENSITIVE                  = False
+    CKA_MODIFIABLE                 = False
+    CKA_DESTROYABLE                = True
+    CKA_LABEL                      = "pkcs11interop-test-object"
+    CKA_APPLICATION                = "SmartcryptWrappedBinary"
+    CKA_VALUE                      = "Hello from Pkcs11Interop test"
+[OK] CKO_DATA object created — handle = 0x1D0001
+
+── Phase 2: Finding object by CKA_LABEL ───────────────
+[OK] Object located by label — handle = 0x1D0001
+
+── Phase 3: Reading and verifying attributes ───────────
+  Retrieved attributes:
+    CKA_CLASS                      = 0x0 (0)
+    CKA_TOKEN                      = True
+    CKA_LABEL                      = "pkcs11interop-test-object"
+    CKA_APPLICATION                = "Opaque object"
+    CKA_VALUE                      = "Hello from Pkcs11Interop test"
+
+*** TEST FAILED: CKA_APPLICATION: expected [SmartcryptWrappedBinary]
+                 but got [Opaque object] ***
+```
+
+This is the baseline failure that confirms the bug is present.
+
+### Expected output when the library **is** patched
+```
+=== YubiHSM CKA_APPLICATION Round-Trip Test ===
+
+[OK] Library loaded — /usr/lib/x86_64-linux-gnu/pkcs11/yubihsm_pkcs11.so
+[OK] Slot found — slot id = 0
+[OK] Session opened & logged in
+
+── Phase 1: Creating CKO_DATA object ──────────────────
+  Creating with template:
+    CKA_CLASS                      = 0x0 (0)
+    CKA_TOKEN                      = True
+    CKA_PRIVATE                    = False
+    CKA_SENSITIVE                  = False
+    CKA_MODIFIABLE                 = False
+    CKA_DESTROYABLE                = True
+    CKA_LABEL                      = "pkcs11interop-test-object"
+    CKA_APPLICATION                = "SmartcryptWrappedBinary"
+    CKA_VALUE                      = "Hello from Pkcs11Interop test"
+[OK] CKO_DATA object created — handle = 0x1D0001
+
+── Phase 2: Finding object by CKA_LABEL ───────────────
+[OK] Object located by label — handle = 0x1D0001
+
+── Phase 3: Reading and verifying attributes ───────────
+  Retrieved attributes:
+    CKA_CLASS                      = 0x0 (0)
+    CKA_TOKEN                      = True
+    CKA_LABEL                      = "pkcs11interop-test-object"
+    CKA_APPLICATION                = "SmartcryptWrappedBinary"
+    CKA_VALUE                      = "Hello from Pkcs11Interop test"
+
+  ✓ CKA_CLASS       = "CKO_DATA"
+  ✓ CKA_TOKEN       = "True"
+  ✓ CKA_LABEL       = "pkcs11interop-test-object"
+  ✓ CKA_APPLICATION = "SmartcryptWrappedBinary"
+  ✓ CKA_VALUE       = "Hello from Pkcs11Interop test"
+[OK] Test object deleted from device
+
+*** ALL CHECKS PASSED ***
+Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception. You can check it with:
+bash
+echo "Exit code: $?"
