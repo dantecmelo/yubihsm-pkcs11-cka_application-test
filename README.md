@@ -120,7 +120,7 @@ export YUBIHSM_PKCS11_CONF=/etc/yubihsm_pkcs11.conf
 dotnet run --configuration Release
 ~~~
 
-### Expected output when the library is **not** yet patched
+### Expected output when the YubiHSM PKCS#11 library is **not** yet patched
 ~~~
 === YubiHSM CKA_APPLICATION Round-Trip Test ===
 
@@ -152,9 +152,9 @@ dotnet run --configuration Release
                  but got [Opaque object] ***
 ~~~
 
-This is the baseline failure that confirms the bug is present.
+This is the baseline failure that confirms the YubiHSM PKCS#11 library is not patched and always uses CKA_APPLICATION="Opaque object" for CKO_DATA objects.
 
-### Expected output when the library **is** patched
+### Expected output when the YubiHSM PKCS#11 library **is** patched
 ~~~
 === YubiHSM CKA_APPLICATION Round-Trip Test ===
 
@@ -193,5 +193,5 @@ This is the baseline failure that confirms the bug is present.
 ~~~
 
 Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception. You can check it with:
-bash
-echo "Exit code: $?"
+
+`echo "Exit code: $?"`
