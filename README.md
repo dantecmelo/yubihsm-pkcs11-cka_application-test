@@ -14,10 +14,16 @@ The test runs in three fully logged phases.
 
 * Phase 2 — Find. It issues C_FindObjects filtered by CKO_DATA and the label. It fails hard if the object is not found, which catches cases where C_CreateObject silently succeeded but didn't actually persist anything.
 
-* Phase 3 — Verify. It calls C_GetAttributeValue for CKA_CLASS, CKA_TOKEN, CKA_LABEL, CKA_APPLICATION, and CKA_VALUE, then asserts each one against the expected value. The critical assertion is CKA_APPLICATION == "SmartcryptWrappedBinary". If the library is not patched you'll see:
+* Phase 3 — Verify. It calls C_GetAttributeValue for CKA_CLASS, CKA_TOKEN, CKA_LABEL, CKA_APPLICATION, and CKA_VALUE, then asserts each one against the expected value. The critical assertion is CKA_APPLICATION == "SmartcryptWrappedBinary". If the library is not patched, you'll see:
+
+~~~
 *** TEST FAILED: CKA_APPLICATION: expected [SmartcryptWrappedBinary]
                  but got [Opaque object] ***
-If it is patched correctly you'll see:
+~~~
+
+If it is patched correctly, you'll see:
+~~~
+
   ✓ CKA_CLASS       = "CKO_DATA"
   ✓ CKA_TOKEN       = "True"
   ✓ CKA_LABEL       = "pkcs11interop-test-object"
@@ -25,7 +31,9 @@ If it is patched correctly you'll see:
   ✓ CKA_VALUE       = "Hello from Pkcs11Interop test"
 
 *** ALL CHECKS PASSED ***
-The test also deletes any leftover object with the same label at startup so repeated runs are idempotent, and it deletes the object at the end to keep the HSM clean. Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception.
+~~~
+
+The test also deletes any leftover objects with the same label at startup, so repeated runs are idempotent, and it deletes the object at the end to keep the HSM clean. Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception.
 
 # How to Build and Run
 ## Part 1 — Install .NET 6 SDK
