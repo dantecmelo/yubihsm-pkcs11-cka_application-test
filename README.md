@@ -30,7 +30,7 @@ If you see a version number, .NET is ready.
 `cd ~/yubihsm-pkcs11-cka_application-test`
 
 ## Create the project file
-{content: }
+~~~
 cat > YubiHsmPkcs11Test.csproj <<'EOF'
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
@@ -48,7 +48,8 @@ cat > YubiHsmPkcs11Test.csproj <<'EOF'
   </ItemGroup>
 </Project>
 EOF
-{content: }
+~~~
+
 ## Save the C# source file
 Create Program.cs and paste the full source code from the previous response into it:
 
