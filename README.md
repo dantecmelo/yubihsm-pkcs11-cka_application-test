@@ -1,14 +1,15 @@
 # What this test application does
-This is a .NET C# application that tests the patched YubiHSM PKCS#11 library https://github.com/dantecmelo/yubihsm-shell_272_opaque.
+This is a .NET C# application that tests the patched YubiHSM PKCS#11 library available at: https://github.com/dantecmelo/yubihsm-shell_272_opaque.
 
 The test runs in three fully logged phases.
 
 * Phase 1 — Create. It builds a C_CreateObject template with:
-- CKO_DATA
-- CKA_TOKEN = true
-- CKA_LABEL = "Custom-CKA_APPLICATION-Opaque-Object"
-- CKA_APPLICATION = "SmartcryptWrappedBinary"
-- A small UTF-8 payload as CKA_VALUE.
+  - CKO_DATA
+  - CKA_TOKEN = true
+  - CKA_LABEL = "Custom-CKA_APPLICATION-Opaque-Object"
+  - CKA_APPLICATION = "SmartcryptWrappedBinary"
+  - A small UTF-8 payload as CKA_VALUE.
+
 Every attribute in the template is printed to the console before the call.
 
 * Phase 2 — Find. It issues C_FindObjects filtered by CKO_DATA and the label. It fails hard if the object is not found, which catches cases where C_CreateObject silently succeeded but didn't actually persist anything.
