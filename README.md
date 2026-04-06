@@ -25,12 +25,12 @@ If you see a version number, .NET is ready.
 
 # Part 2 — Create the C# Project
 ## Make a project directory
-mkdir -p ~/yubihsm-pkcs11-cka_application-test
+`mkdir -p ~/yubihsm-pkcs11-cka_application-test`
 
-cd ~/yubihsm-pkcs11-cka_application-test
+`cd ~/yubihsm-pkcs11-cka_application-test`
 
 ## Create the project file
-cat > YubiHsmPkcs11Test.csproj <<'EOF'
+`cat > YubiHsmPkcs11Test.csproj <<'EOF'
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -46,7 +46,7 @@ cat > YubiHsmPkcs11Test.csproj <<'EOF'
     <PackageReference Include="Net.Pkcs11Interop" Version="5.1.3" />
   </ItemGroup>
 </Project>
-EOF
+EOF`
 
 ## Save the C# source file
 Create Program.cs and paste the full source code from the previous response into it:
