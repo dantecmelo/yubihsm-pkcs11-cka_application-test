@@ -53,13 +53,14 @@ EOF
 ## Save the C# source file
 Create Program.cs and paste the full source code from the previous response into it:
 
-nano Program.cs
+`nano Program.cs`
 
 Paste the code, then save with Ctrl+O, Enter, Ctrl+X.
 
 ## Edit the configuration constants
 Open Program.cs and locate the Config class near the top. Change the following values to match your environment:
 
+~~~
 private static class Config
 {
     // Full path to the .so file — confirm this with:
@@ -79,5 +80,6 @@ private static class Config
     public const string ObjectLabel    = "Custom-CKA_APPLICATION-Opaque-Object";
     public const string PayloadText    = "This is a custom CKA_APPLICATION Opaque Object";
 }
+~~~
 
 Save and close the file.
