@@ -21,19 +21,19 @@ The test runs in three fully logged phases.
                  but got [Opaque object] ***
 ~~~
 
-If it is patched correctly, you'll see:
+  If it is patched correctly, you'll see:
 ~~~
 
   ✓ CKA_CLASS       = "CKO_DATA"
   ✓ CKA_TOKEN       = "True"
-  ✓ CKA_LABEL       = "pkcs11interop-test-object"
+  ✓ CKA_LABEL       = "Custom-CKA_APPLICATION-Opaque-Object"
   ✓ CKA_APPLICATION = "SmartcryptWrappedBinary"
-  ✓ CKA_VALUE       = "Hello from Pkcs11Interop test"
+  ✓ CKA_VALUE       = "This is a custom CKA_APPLICATION Opaque Object"
 
 *** ALL CHECKS PASSED ***
 ~~~
 
-The test also deletes any leftover objects with the same label at startup, so repeated runs are idempotent, and it deletes the object at the end to keep the HSM clean. Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception.
+  The test also deletes any leftover objects with the same label at startup, so repeated runs are idempotent, and it deletes the object at the end to keep the HSM clean. Exit code is 0 on pass, 1 on assertion failure, 2 on unexpected exception.
 
 # How to Build and Run
 ## Part 1 — Install .NET 6 SDK
