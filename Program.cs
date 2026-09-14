@@ -108,8 +108,8 @@ namespace YubiHsmCkaApplicationTest
             ReadAndVerifyAttributes(session, foundHandle, factories);
 
             // Cleanup
-            session.DestroyObject(foundHandle);
-            Step("Test object deleted from device");
+            //session.DestroyObject(foundHandle);
+            //Step("Test object deleted from device");
 
             session.Logout();
         }
@@ -126,7 +126,7 @@ namespace YubiHsmCkaApplicationTest
                 "── Phase 1: Creating CKO_DATA object ──────────────────");
 
             byte[] labelBytes   = Encoding.UTF8.GetBytes(Config.ObjectLabel);
-            byte[] appBytes     = Encoding.UTF8.GetBytes(Config.exit);
+            byte[] appBytes     = Encoding.UTF8.GetBytes(Config.ApplicationTag);
             byte[] payloadBytes = Encoding.UTF8.GetBytes(Config.PayloadText);
 
             var template = new List<IObjectAttribute>
@@ -280,7 +280,7 @@ namespace YubiHsmCkaApplicationTest
         private static IObjectAttribute GetAttr(
             IEnumerable<IObjectAttribute> attrs, CKA type)
         {
-            IObjectAttribute a = attrs.FirstOrDefault(
+            IObjectAttribute? a = attrs.FirstOrDefault(
                 x => x.Type == (ulong)type);
             if (a == null)
                 throw new TestFailureException(
@@ -317,7 +317,7 @@ namespace YubiHsmCkaApplicationTest
                     "No slots with a token present. " +
                     "Is yubihsm-connector running?");
 
-            ISlot slot = slots.FirstOrDefault(s => s.SlotId == slotId);
+            ISlot? slot = slots.FirstOrDefault(s => s.SlotId == slotId);
             if (slot == null)
                 throw new TestFailureException(
                     $"Slot {slotId} not found. Available: " +
@@ -359,7 +359,7 @@ namespace YubiHsmCkaApplicationTest
         // ------------------------------------------------------------------ //
         //  Helpers — logging                                                   //
         // ------------------------------------------------------------------ //
-        private static void Step(string msg, string detail = null)
+        private static void Step(string msg, string? detail = null)
         {
             Console.Write($"[OK] {msg}");
             if (detail != null) Console.Write($" — {detail}");
