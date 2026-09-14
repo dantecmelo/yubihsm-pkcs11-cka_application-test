@@ -82,7 +82,7 @@ cat > YubiHsmPkcs11Test.csproj <<'EOF'
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Net.Pkcs11Interop" Version="5.1.3" />
+    <PackageReference Include="Pkcs11Interop" Version="5.1.3" />
   </ItemGroup>
 </Project>
 EOF
